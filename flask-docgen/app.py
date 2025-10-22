@@ -27,14 +27,33 @@ def index():
                 "HTTP-Referer": "https://yourwebsite.com",
                 "X-Title": "Flask Doc Generator"
             },
-            model="deepseek/deepseek-chat",  # Or openai/gpt-4o
+            model="deepseek/deepseek-chat",
             messages=[
-                {"role": "system", "content": "You are an assistant that writes clean project documentation."},
-                {"role": "user", "content": f"Generate a well-structured RMarkdown documentation from this content:\n{rmd_content}"}
+                {
+                    "role": "system",
+                    "content": (
+                        "You are an expert technical documentation writer. "
+                        "Your task is to write comprehensive and well-structured documentation in RMarkdown format "
+                        "for a GitHub repository. "
+                        "Explain the repository’s purpose, its key features, and how the code works logically. "
+                        "Highlight the importance of the project, technologies used, and possible applications. "
+                        "Organize your response with sections such as 'Overview', 'Architecture', 'Core Components', "
+                        "'Usage', and 'Project Significance'. "
+                        "Make it eye-catching, professional, and suitable for publication."
+                    )
+                },
+                {
+                    "role": "user",
+                    "content": (
+                        f"Here is the extracted code summary from the repository:\n\n{rmd_content}\n\n"
+                        "Now generate a comprehensive RMarkdown documentation file that explains this project."
+                    )
+                }
             ]
         )
 
         doc_output = completion.choices[0].message.content
+
         return render_template("index.html", result=doc_output)
 
     return render_template("index.html")
