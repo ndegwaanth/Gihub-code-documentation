@@ -28,28 +28,61 @@ def index():
                 "X-Title": "Flask Doc Generator"
             },
             model="deepseek/deepseek-chat",
-            messages=[
+            messages = [
                 {
                     "role": "system",
-                    "content": (
-                        "You are an expert technical documentation writer. "
-                        "Your task is to write comprehensive and well-structured documentation in RMarkdown format "
-                        "for a GitHub repository. "
-                        "Explain the repository’s purpose, its key features, and how the code works logically. "
-                        "Highlight the importance of the project, technologies used, and possible applications. "
-                        "Organize your response with sections such as 'Overview', 'Architecture', 'Core Components', "
-                        "'Usage', and 'Project Significance'. "
-                        "Make it eye-catching, professional, and suitable for publication."
-                    )
+                    "content": """You are an advanced documentation generator that produces professional, detailed RMarkdown documentation
+            for GitHub repositories. Format your output in rich RMarkdown style, including:
+
+            - YAML header for metadata
+            - Collapsible sections using HTML <details> and <summary> tags
+            - Tables for summarizing components
+            - Syntax-highlighted code blocks
+            - Markdown badges or highlights for emphasis
+            - 'Callout' sections for notes, warnings, or important info
+            - Include a comprehensive 'Technologies Used' section listing all programming languages, frameworks, and libraries found in the repository
+
+            Example structure:
+            ---
+            title: "Comprehensive Documentation for <Project Name>"
+            author: "AI Documentation Generator"
+            date: "`r Sys.Date()`"
+            output:
+            html_document:
+                toc: true
+                toc_depth: 3
+                toc_float: true
+            ---
+
+            # Overview
+            <High-level explanation>
+
+            # Architecture
+            <Flowchart or component table>
+
+            # Key Modules
+            <detailed sections with code snippets>
+
+            # How It Works
+            <step-by-step explanation>
+
+            # Technologies Used
+            <List all programming languages, frameworks, libraries, and tools utilized in the repository>
+
+            # Importance and Use Cases
+            <business and technical significance>
+
+            # Conclusion
+            <final thoughts or references>
+
+            Use elegant formatting, clear structure, and ensure all technologies are mentioned."""
                 },
                 {
                     "role": "user",
-                    "content": (
-                        f"Here is the extracted code summary from the repository:\n\n{rmd_content}\n\n"
-                        "Now generate a comprehensive RMarkdown documentation file that explains this project."
-                    )
+                    "content": f"Generate comprehensive RMarkdown documentation for this repository: {repo_url}"
                 }
             ]
+
         )
 
         doc_output = completion.choices[0].message.content
