@@ -29,6 +29,7 @@ def index():
                 "X-Title": "Flask Doc Generator"
             },
             model="deepseek/deepseek-chat",
+            max_tokens=3000,
             messages = [
                 {
                     "role": "system",
@@ -103,6 +104,7 @@ def api_generate():
 
     completion = client.chat.completions.create(
         model="deepseek/deepseek-chat",
+        max_tokens=3000,
         messages=[{"role": "user", "content": f"Format this RMarkdown professionally:\n{rmd_content}"}]
     )
 
